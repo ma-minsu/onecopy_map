@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONECOPY</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="map" style="width: 1400px; height: 1000px;"></div> 
+    <div id="buttons">
+        <button id="filterButton">90일 이상 필터</button>
+        <button id="resetButton">초기화</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>계약번호</th>
+                <th>회사명</th>
+                <th>주소</th>
+                <th>대여기계</th>
+                <th>방문지연일</th>
+                <th>위도</th>
+                <th>경도</th>
+            </tr>
+        </thead>
+        <tbody id="contract-table-body">
+            <!-- 계약 정보는 JavaScript에서 추가될 예정입니다. -->
+        </tbody>
+    </table>
+
+    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=l9j1o2rgu6"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
