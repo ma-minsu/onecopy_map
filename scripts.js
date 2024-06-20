@@ -22,7 +22,7 @@ const parseCSVRow = row => {
 // CSV 파일을 파싱하여 데이터 읽기
 async function fetchCSVData() {
     try {
-        const response = await fetch('data_20240621.csv');
+        const response = await fetch('data_20240619.csv');
         if (!response.ok) {
             throw new Error('Failed to fetch CSV data');
         }
