@@ -22,21 +22,23 @@
             <button id="filterButton" class="btn btn-primary">필터 적용</button>
             <button id="resetButton" class="btn btn-secondary">초기화</button>
         </div>        
-        <table class="table table-bordered table-hover my-3">
-            <thead class="thead-light">
-                <tr>
-                    <th>번호</th>
-                    <th>회사</th>
-                    <th>주소</th>
-                    <th>기계</th>
-                    <th>Day</th>
-                    <th>길찾기</th>
-                </tr>
-            </thead>
-            <tbody id="contract-table-body">
-                <!-- 계약 정보는 JavaScript에서 추가될 예정입니다. -->
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>번호</th>
+                        <th>회사</th>
+                        <th>주소</th>
+                        <th>기계</th>
+                        <th>Day</th>
+                        <th>T맵 길찾기</th>
+                    </tr>
+                </thead>
+                <tbody id="contract-table-body">
+                    <!-- 동적 데이터 행 추가 영역 -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div id="toast" class="toast" style="display: none;">복사됨</div>
