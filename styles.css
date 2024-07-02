@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Nanum Gothic', 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
@@ -8,40 +8,41 @@ body {
 }
 
 #map {
-    height: 80vh; /* 뷰포트 높이의 80% */
+    height: 40vh;
 }
 
 #buttons {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
     margin-top: 10px;
-    text-align: center;
 }
 
 #buttons button, #buttons input {
-    margin-right: 10px;
-    padding: 5px 10px;
+    margin-right: 5px;
+    padding: 6px 12px;
     cursor: pointer;
 }
 
 #buttons input[type="number"] {
-    margin-right: 10px;
-    padding: 5px 10px;
+    width: auto;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
+    font-size: 16px;
+    text-align: center;
 }
 
 table {
-    width: 80vw; /* 테이블도 지도의 크기와 맞추기 위해 80vw로 설정 */
+    width: 80vw;
     border-collapse: collapse;
     margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ccc;
+    text-align: center;
+    vertical-align: middle;
 }
 
 th, td {
+    border: 1px solid #ccc;
     padding: 8px;
-    text-align: center;
 }
 
 thead {
@@ -66,23 +67,53 @@ tbody tr:nth-child(even) {
     padding: 10px 20px;
     border-radius: 5px;
     z-index: 1000;
-    display: none; /* 초기 상태는 숨김 */
-    opacity: 0; /* 페이드 인/아웃 효과를 위해 */
+    display: none;
+    opacity: 0;
     transition: opacity 0.5s, top 0.5s;
 }
 
 .toast.show {
     display: block;
     opacity: 1;
-    top: 40px;  /* 약간 아래로 이동하면서 페이드인 */
+    top: 40px;
 }
 
 .table-responsive {
-    overflow-x: auto; /* 수평 스크롤을 위한 설정 */
+    overflow-x: auto;
+}
+
+td.copyable, td.clickable {
+    cursor: pointer;
+}
+
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+}
+
+.btn-icon img {
+    width: 100%;
+    height: auto;
 }
 
 @media (max-width: 768px) {
-    .table th, .table td {
-        padding: 8px; /* 모바일에서의 패딩 조정 */
+    table th, table td, #buttons input[type="number"], #buttons .btn {
+        padding: 4px 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .table-responsive td {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .table-responsive td {
+        font-size: 8px;
     }
 }
