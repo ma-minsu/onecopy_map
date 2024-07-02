@@ -172,13 +172,13 @@ function addToContractTable(contract) {
     const tableBody = document.getElementById('contract-table-body');
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
-        <td>${contract.contractNo}</td>
+        <td class="copyable" onclick="copyToClipboard(this)">${contract.contractNo}</td>
         <td>${contract.companyName}</td>
         <td class="copyable" onclick="copyToClipboard(this)">${contract.address}</td>
         <td>${contract.rentalMachine}</td>
         <td>${contract.delayDays}</td>
         <td>
-            <button onclick="openTMap(${contract.latitude}, ${contract.longitude}, '${encodeURIComponent(contract.address)}')">T MAP</button>
+            <button onclick="openTMap(${contract.latitude}, ${contract.longitude}, '${contract.companyName}')">T MAP</button>
         </td>
     `;
     tableBody.appendChild(newRow);
