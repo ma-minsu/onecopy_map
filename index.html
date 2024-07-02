@@ -5,30 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONECOPY</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
-    <div id="map"></div> 
-    <div id="buttons">
-        <button id="filterButton">90일 이상 필터</button>
-        <button id="resetButton">초기화</button>
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-12">
+                <div id="datepicker" class="my-3"></div>
+            </div>
+        </div>
+        <div id="map" class="my-3"></div>
+        <div id="buttons" class="btn-group my-3" role="group" aria-label="Basic example">
+            <input type="number" id="delayInput" class="form-control" placeholder="일수 입력" value="90" style="width: auto;">
+            <button id="filterButton" class="btn btn-primary">필터 적용</button>
+            <button id="resetButton" class="btn btn-secondary">초기화</button>
+        </div>        
+        <table class="table table-bordered table-hover my-3">
+            <thead class="thead-light">
+                <tr>
+                    <th>번호</th>
+                    <th>회사</th>
+                    <th>주소</th>
+                    <th>기계</th>
+                    <th>Day</th>
+                    <th>길찾기</th>
+                </tr>
+            </thead>
+            <tbody id="contract-table-body">
+                <!-- 계약 정보는 JavaScript에서 추가될 예정입니다. -->
+            </tbody>
+        </table>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>계약번호</th>
-                <th>회사명</th>
-                <th>주소</th>
-                <th>대여기계</th>
-                <th>방문지연일</th>
-                <th>위도</th>
-                <th>경도</th>
-            </tr>
-        </thead>
-        <tbody id="contract-table-body">
-            <!-- 계약 정보는 JavaScript에서 추가될 예정입니다. -->
-        </tbody>
-    </table>
 
+    <div id="toast" class="toast" style="display: none;">복사됨</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=l9j1o2rgu6"></script>
     <script src="scripts.js"></script>
 </body>
