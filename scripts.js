@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const days = document.getElementById('delayInput').value;
         filterContractsByDelay(days); // 입력된 일수 이상 지연된 계약만 필터링
     });
+
+    adjustFontSizeForAddresses();
+
 });
 
 async function fetchCSVData(fileName) {
@@ -104,7 +107,7 @@ let contractData = [];
 
 async function initMap() {
     const mapOptions = {
-        center: new naver.maps.LatLng(37.5665, 126.9780),
+        center: new naver.maps.LatLng(37.4792981, 127.0418488),
         zoom: 11
     };
     map = new naver.maps.Map('map', mapOptions);
@@ -173,12 +176,14 @@ function addToContractTable(contract) {
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
         <td class="copyable" onclick="copyToClipboard(this)">${contract.contractNo}</td>
-        <td>${contract.companyName}</td>
-        <td class="copyable" onclick="copyToClipboard(this)">${contract.address}</td>
+        <td class="clickable" onclick="generateCompanyURL('${contract.contractNo}')">${contract.companyName}</td>
+        <td class="copyable address-cell" onclick="copyToClipboard(this)">${contract.address}</td>
         <td>${contract.rentalMachine}</td>
         <td>${contract.delayDays}</td>
         <td>
-            <button onclick="openTMap(${contract.latitude}, ${contract.longitude}, '${contract.companyName}')">T MAP</button>
+            <button onclick="openTMap(${contract.latitude}, ${contract.longitude}, '${contract.companyName}')" class="btn btn-icon" style="background: none; border: none; padding: 0;">
+                <img src="TMAP logo.svg" alt="T맵" style="height: 30px;">
+            </button>
         </td>
     `;
     tableBody.appendChild(newRow);
@@ -218,3 +223,28 @@ function openTMap(lat, lon, name) {
     window.open(tmapUrl);
 }
 
+function generateCompanyURL(CompanyNum) {
+    // URL 인코딩
+    const encodedCompanyNum = encodeURIComponent(CompanyNum);
+
+    // URL 생성
+    const url = `http://viko.icanband.com/contract/simple_lookup?sort=&grade=all&search_type=contract_no&search_text=${encodedCompanyNum}`;
+
+    // 링크로 이동
+    window.location.href = url;
+}
+
+function adjustFontSizeForAddresses() {
+    const addresses = document.querySelectorAll('.table-responsive td.address-cell');
+
+    addresses.forEach(address => {
+        const contentLength = address.textContent.length;
+        if (contentLength > 50) {
+            address.style.fontSize = '12px';
+        } else if (contentLength > 30) {
+            address.style.fontSize = '14px';
+        } else {
+            address.style.fontSize = '16px';
+        }
+    });
+}
