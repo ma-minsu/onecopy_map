@@ -8,9 +8,7 @@ body {
 }
 
 #map {
-    width: 80vw; /* 뷰포트 너비의 80% */
     height: 80vh; /* 뷰포트 높이의 80% */
-    margin-top: 20px; /* 지도와 화면 상단 사이에 약간의 여백 추가 */
 }
 
 #buttons {
@@ -18,10 +16,17 @@ body {
     text-align: center;
 }
 
-#buttons button {
+#buttons button, #buttons input {
     margin-right: 10px;
     padding: 5px 10px;
     cursor: pointer;
+}
+
+#buttons input[type="number"] {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
 }
 
 table {
@@ -45,4 +50,29 @@ thead {
 
 tbody tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+#datepicker .ui-datepicker {
+    width: 100%;
+    border: none;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: black;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none; /* 초기 상태는 숨김 */
+    opacity: 0; /* 페이드 인/아웃 효과를 위해 */
+    transition: opacity 0.5s, top 0.5s;
+}
+
+.toast.show {
+    display: block;
+    opacity: 1;
+    top: 40px;  /* 약간 아래로 이동하면서 페이드인 */
 }
