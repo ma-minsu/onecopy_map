@@ -115,7 +115,7 @@ async function initMap() {
     // Load initial data based on today's date
     const today = new Date();
     const formattedToday = formatDate(today);
-    const fileName = `data_${formattedToday}.csv`;
+    const fileName = `data/data_${formattedToday}.csv`;
 
     contractData = await fetchCSVData(fileName);
     updateMapAndTable(contractData);
