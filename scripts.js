@@ -27,9 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         maxDate: 0, // 오늘 날짜까지 선택 가능
         minDate: -30, // 최대 30일 전까지 선택 가능
         onSelect: async function(dateText) {
-            const fileName = `data_${dateText}.csv`;
+            const fileName = `data/data_${dateText}.csv`;
             contractData = await fetchCSVData(fileName);
-            updateMapAndTable(contractData); // 지도와 테이블 업데이트
+            const filteredData = filterContractsByDelayInit(contractData, 90);
+            updateMapAndTable(filteredData);
         }
     });
 
@@ -118,7 +119,8 @@ async function initMap() {
     const fileName = `data/data_${formattedToday}.csv`;
 
     contractData = await fetchCSVData(fileName);
-    updateMapAndTable(contractData);
+    const filteredData = filterContractsByDelayInit(contractData, 90);
+    updateMapAndTable(filteredData);
 }
 
 function groupContractsByLocation(contractData) {
@@ -131,6 +133,15 @@ function groupContractsByLocation(contractData) {
         grouped[key].push(contract);
     });
     return Object.values(grouped);
+}
+
+function filterContractsByDelayInit(contractData, days) {
+    const delayDays = parseInt(days, 10);
+    if (isNaN(delayDays)) {
+        console.error('유효한 숫자가 아닙니다.');
+        return contractData;
+    }
+    return contractData.filter(contract => parseInt(contract.delayDays) >= delayDays);
 }
 
 let activeInfoWindow; // 활성 정보 창을 추적하기 위한 변수
@@ -231,7 +242,8 @@ function generateCompanyURL(CompanyNum) {
     const url = `http://viko.icanband.com/contract/simple_lookup?sort=&grade=all&search_type=contract_no&search_text=${encodedCompanyNum}`;
 
     // 링크로 이동
-    window.location.href = url;
+    window.open(url, '_blank');
+
 }
 
 function adjustFontSizeForAddresses() {
