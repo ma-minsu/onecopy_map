@@ -37,13 +37,23 @@ table {
     border-collapse: collapse;
     margin-top: 20px;
     text-align: center;
-    vertical-align: middle;
+    height: auto;
 }
 
-th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
+th {
+    vertical-align: middle;
+    line-height: 1; /* 높이 중앙 정렬 */
 }
+
+td {
+    vertical-align: middle;
+    line-height: 3;
+    white-space: nowrap; /* 줄바꿈 방지 */
+    overflow: hidden; /* 넘치는 내용 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+    max-width: 200px; /* 필요한 경우 셀의 최대 너비 조정 */
+}
+
 
 thead {
     background-color: #f2f2f2;
@@ -86,16 +96,20 @@ td.copyable, td.clickable {
     cursor: pointer;
 }
 
+.btn-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .btn-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: auto;
-    height: auto;
 }
 
 .btn-icon img {
-    width: 100%;
+    width: 35px;
     height: auto;
 }
 
