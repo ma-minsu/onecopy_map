@@ -51,7 +51,7 @@ td {
     white-space: nowrap; /* 줄바꿈 방지 */
     overflow: hidden; /* 넘치는 내용 숨기기 */
     text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
-    max-width: 200px; /* 필요한 경우 셀의 최대 너비 조정 */
+    max-width: 120px; /* 필요한 경우 셀의 최대 너비 조정 */
 }
 
 
@@ -65,7 +65,7 @@ tbody tr:nth-child(even) {
 
 #datepicker .ui-datepicker {
     width: 100%;
-    border: none;
+    border: auto;
 }
 
 .toast {
@@ -109,7 +109,7 @@ td.copyable, td.clickable {
 }
 
 .btn-icon img {
-    width: 35px;
+    width: 25px;
     height: auto;
 }
 
