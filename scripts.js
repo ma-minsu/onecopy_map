@@ -186,18 +186,24 @@ function addToContractTable(contract) {
     const tableBody = document.getElementById('contract-table-body');
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
-        <td class="copyable" onclick="copyToClipboard(this)">${contract.contractNo}</td>
+        <td class="clickable" onclick="generateNumURL('${contract.contractNo}')">${contract.contractNo}</td>
         <td class="clickable" onclick="generateCompanyURL('${contract.contractNo}')">${contract.companyName}</td>
         <td class="copyable address-cell" onclick="copyToClipboard(this)">${contract.address}</td>
         <td>${contract.rentalMachine}</td>
         <td>${contract.delayDays}</td>
         <td>
-            <button onclick="openTMap(${contract.latitude}, ${contract.longitude}, '${contract.companyName}')" class="btn btn-icon" style="background: none; border: none; padding: 0;">
-                <img src="TMAP logo.svg" alt="T맵" style="height: 30px;">
-            </button>
+            <div class="btn-container">
+                <button onclick="openTMap(${contract.latitude}, ${contract.longitude}, '${contract.companyName}')" class="btn btn-icon">
+                    <img src="TMAP logo.svg" alt="T맵">
+                </button>
+                <button onclick="openNaverMap(${contract.latitude}, ${contract.longitude}, '${contract.companyName}')" class="btn btn-icon">
+                    <img src="NMAP logo.png" alt="NAVER">
+                </button>
+            </div>
         </td>
     `;
     tableBody.appendChild(newRow);
+
 }
 
 function formatDate(date) {
@@ -234,6 +240,12 @@ function openTMap(lat, lon, name) {
     window.open(tmapUrl);
 }
 
+function openNaverMap(lat, lon, name) {
+    const encodedName = encodeURIComponent(name);
+    const naverMapUrl = `https://map.naver.com/v5/entry/address?lat=${lat}&lng=${lon}&title=${encodedName}`;
+    window.open(naverMapUrl);
+}
+
 function generateCompanyURL(CompanyNum) {
     // URL 인코딩
     const encodedCompanyNum = encodeURIComponent(CompanyNum);
@@ -246,17 +258,15 @@ function generateCompanyURL(CompanyNum) {
 
 }
 
-function adjustFontSizeForAddresses() {
-    const addresses = document.querySelectorAll('.table-responsive td.address-cell');
+function generateNumURL(CompanyNum) {
+    // URL 인코딩
+    const encodedCompanyNum = encodeURIComponent(CompanyNum);
 
-    addresses.forEach(address => {
-        const contentLength = address.textContent.length;
-        if (contentLength > 50) {
-            address.style.fontSize = '12px';
-        } else if (contentLength > 30) {
-            address.style.fontSize = '14px';
-        } else {
-            address.style.fontSize = '16px';
-        }
-    });
+    // URL 생성
+    const url = `http://viko.icanband.com/system/toner_history?search_type=contract_no&search_text=${encodedCompanyNum}`;
+
+    // 링크로 이동
+    window.open(url, '_blank');
+
 }
+
