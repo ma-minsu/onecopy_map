@@ -35,25 +35,42 @@ body {
 table {
     width: 80vw;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
     height: auto;
 }
 
 th {
-    vertical-align: middle;
     line-height: 1; /* 높이 중앙 정렬 */
+    white-space: nowrap; /* 줄바꿈 방지 */
+    padding: 8px 3px !important; /* 원하는 패딩 값으로 조절 */
+    font-size: 12px;
 }
 
 td {
-    vertical-align: middle;
-    line-height: 3;
+    font-size: 10px;
     white-space: nowrap; /* 줄바꿈 방지 */
     overflow: hidden; /* 넘치는 내용 숨기기 */
+    padding: 5px 8px !important; /* 원하는 패딩 값으로 조절 */
+    vertical-align: middle !important; /* 기본 수직 정렬을 가운데로 설정 */
     text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
-    max-width: 120px; /* 필요한 경우 셀의 최대 너비 조정 */
 }
 
+td.company-cell {
+    max-width: 20vw;
+}
+
+td.address-cell{
+    max-width: 20vw;
+}
+
+td.cell{
+    max-width: 15vw;
+}
+
+td.day-cell{
+    padding: 5px 2px !important; /* 원하는 패딩 값으로 조절 */
+}
 
 thead {
     background-color: #f2f2f2;
@@ -96,6 +113,10 @@ td.copyable, td.clickable {
     cursor: pointer;
 }
 
+.btn{
+    padding: 2px !important;
+}
+
 .btn-container {
     display: inline-flex;
     align-items: center;
@@ -109,25 +130,6 @@ td.copyable, td.clickable {
 }
 
 .btn-icon img {
-    width: 25px;
+    width: 20px;
     height: auto;
-}
-
-@media (max-width: 768px) {
-    table th, table td, #buttons input[type="number"], #buttons .btn {
-        padding: 4px 10px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 600px) {
-    .table-responsive td {
-        font-size: 10px;
-    }
-}
-
-@media (max-width: 400px) {
-    .table-responsive td {
-        font-size: 8px;
-    }
 }
