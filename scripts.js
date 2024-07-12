@@ -42,9 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const days = document.getElementById('delayInput').value;
         filterContractsByDelay(days); // 입력된 일수 이상 지연된 계약만 필터링
     });
-
-    adjustFontSizeForAddresses();
-
 });
 
 async function fetchCSVData(fileName) {
@@ -186,12 +183,12 @@ function addToContractTable(contract) {
     const tableBody = document.getElementById('contract-table-body');
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
-        <td class="clickable" onclick="generateNumURL('${contract.contractNo}')">${contract.contractNo}</td>
-        <td class="clickable" onclick="generateCompanyURL('${contract.contractNo}')">${contract.companyName}</td>
+        <td class="clickable cell" onclick="generateNumURL('${contract.contractNo}')">${contract.contractNo}</td>
+        <td class="clickable company-cell" onclick="generateCompanyURL('${contract.contractNo}')">${contract.companyName}</td>
         <td class="copyable address-cell" onclick="copyToClipboard(this)">${contract.address}</td>
-        <td>${contract.rentalMachine}</td>
-        <td>${contract.delayDays}</td>
-        <td>
+        <td class="cell">${contract.rentalMachine}</td>
+        <td class="day-cell">${contract.delayDays}</td>
+        <td class="map">
             <div class="btn-container">
                 <button onclick="openTMap(${contract.latitude}, ${contract.longitude}, '${contract.companyName}')" class="btn btn-icon">
                     <img src="TMAP logo.svg" alt="T맵">
@@ -203,7 +200,6 @@ function addToContractTable(contract) {
         </td>
     `;
     tableBody.appendChild(newRow);
-
 }
 
 function formatDate(date) {
