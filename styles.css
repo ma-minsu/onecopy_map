@@ -22,10 +22,15 @@ body {
     margin-right: 5px;
     padding: 6px 12px;
     cursor: pointer;
+    white-space: nowrap; /* 줄바꿈 방지 */
+    font-size: 12px;
+    width: auto;
+    height: auto;
 }
 
 #buttons input[type="number"] {
-    width: auto;
+    max-width: 40vw;
+    height: auto;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     font-size: 16px;
@@ -43,7 +48,7 @@ table {
 th {
     line-height: 1; /* 높이 중앙 정렬 */
     white-space: nowrap; /* 줄바꿈 방지 */
-    padding: 8px 3px !important; /* 원하는 패딩 값으로 조절 */
+    padding: 10px 3px !important; /* 원하는 패딩 값으로 조절 */
     font-size: 12px;
 }
 
@@ -132,4 +137,10 @@ td.copyable, td.clickable {
 .btn-icon img {
     width: 20px;
     height: auto;
+}
+
+@media (min-width: 600px) {
+    .table-responsive td {
+        font-size: 12px;
+    }
 }
