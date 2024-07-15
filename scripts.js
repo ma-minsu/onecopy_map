@@ -183,6 +183,14 @@ async function initMap() {
     contractData = await fetchCSVData(fileName);
     const filteredData = filterContractsByDelayInit(contractData, 90);
     updateMapAndTable(filteredData);
+
+    // 지도 클릭 이벤트 리스너 추가
+    naver.maps.Event.addListener(map, 'click', function() {
+        if (activeInfoWindow) {
+            activeInfoWindow.close();
+            activeInfoWindow = null;
+        }
+    });
 }
 
 function groupContractsByLocation(contractData) {
