@@ -61,6 +61,10 @@ td {
     text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
 }
 
+td.contract-checkbox {
+    max-width: 10vw;
+}
+
 td.company-cell {
     max-width: 20vw;
 }
