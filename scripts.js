@@ -42,6 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const days = document.getElementById('delayInput').value;
         filterContractsByDelay(days); // 입력된 일수 이상 지연된 계약만 필터링
     });
+
+    document.getElementById('tonerCheckButton').addEventListener('click', function() {
+        filterContractsByTonerCheck(); // 토너 점검이 필요한 계약만 필터링
+    });
 });
 
 async function fetchCSVData(fileName) {
@@ -58,7 +62,8 @@ async function fetchCSVData(fileName) {
                 rentalMachine: columns[3],
                 delayDays: columns[4],
                 latitude: parseFloat(columns[5]),
-                longitude: parseFloat(columns[6])
+                longitude: parseFloat(columns[6]),
+                tonerCheck: parseInt(columns[7])
             };
         });
     } catch (error) {
@@ -90,6 +95,17 @@ function filterContractsByDelay(days) {
     });
     refreshContractTable(filteredData);
 }
+
+function filterContractsByTonerCheck() {
+    const filteredData = contractData.filter(contract => contract.tonerCheck === 1);
+    clearMarkers();
+    const groupedData = groupContractsByLocation(filteredData);
+    groupedData.forEach(contracts => {
+        addMarker(contracts);
+    });
+    refreshContractTable(filteredData);
+}
+
 
 function refreshContractTable(contractData) {
     const tableBody = document.getElementById('contract-table-body');
