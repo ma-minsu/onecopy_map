@@ -31,8 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
             contractData = await fetchCSVData(fileName);
             const filteredData = filterContractsByDelayInit(contractData, 90);
             updateMapAndTable(filteredData);
+        },
+        beforeShow: function(input, inst) {
+            setTimeout(function() {
+                inst.dpDiv.css({
+                    top: input.offsetTop + input.offsetHeight + 10,
+                    left: input.offsetLeft
+                });
+            }, 0);
         }
-    });
+    }).addClass('custom-datepicker');
+
 
     document.getElementById('resetButton').addEventListener('click', function() {
         updateMapAndTable(contractData); // 모든 마커와 테이블을 리셋
@@ -46,7 +55,47 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('tonerCheckButton').addEventListener('click', function() {
         filterContractsByTonerCheck(); // 토너 점검이 필요한 계약만 필터링
     });
+
+    document.getElementById('showSelectedButton').addEventListener('click', function() {
+        showSelectedContractsOnMap(); // 체크된 데이터만 지도에 표시
+    });
 });
+
+function handleCheckboxChange() {
+    const tableBody = document.getElementById('contract-table-body');
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+    const checkedRows = rows.filter(row => row.querySelector('.contract-checkbox').checked);
+    const uncheckedRows = rows.filter(row => !row.querySelector('.contract-checkbox').checked);
+
+    // Clear table and re-append rows with checked rows first
+    tableBody.innerHTML = '';
+    checkedRows.forEach(row => tableBody.appendChild(row));
+    uncheckedRows.forEach(row => tableBody.appendChild(row));
+}
+
+function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+        return text.slice(0, maxLength) + '...';
+    } else {
+        return text;
+    }
+}
+
+function showSelectedContractsOnMap() {
+    const selectedContracts = contractData.filter(contract => {
+        const checkbox = document.querySelector(`input[data-contract-no="${contract.contractNo}"]`);
+        return checkbox && checkbox.checked;
+    });
+    updateMap(selectedContracts);
+}
+
+function updateMap(contractData) {
+    clearMarkers();
+    const groupedData = groupContractsByLocation(contractData);
+    groupedData.forEach(contracts => {
+        addMarker(contracts);
+    });
+}
 
 async function fetchCSVData(fileName) {
     try {
@@ -178,6 +227,16 @@ function addMarker(contracts) {
         }
         infoWindow.open(map, marker);
         activeInfoWindow = infoWindow; // 새로운 정보 창을 활성 정보 창으로 설정
+
+        // 체크박스 체크
+        const contractNos = contracts.map(contract => contract.contractNo);
+        contractNos.forEach(contractNo => {
+            const checkbox = document.querySelector(`input[data-contract-no="${contractNo}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+                checkbox.dispatchEvent(new Event('change')); // 체크박스 이벤트 트리거
+            }
+        });
     });
 }
 
@@ -199,6 +258,7 @@ function addToContractTable(contract) {
     const tableBody = document.getElementById('contract-table-body');
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
+        <td><input type="checkbox" class="contract-checkbox" data-contract-no="${contract.contractNo}"></td>
         <td class="clickable cell" onclick="generateNumURL('${contract.contractNo}')">${contract.contractNo}</td>
         <td class="clickable company-cell" onclick="generateCompanyURL('${contract.contractNo}')">${contract.companyName}</td>
         <td class="copyable address-cell" onclick="copyToClipboard(this)">${contract.address}</td>
@@ -216,6 +276,10 @@ function addToContractTable(contract) {
         </td>
     `;
     tableBody.appendChild(newRow);
+
+    // 체크박스 이벤트 리스너 추가
+    const checkbox = newRow.querySelector('.contract-checkbox');
+    checkbox.addEventListener('change', handleCheckboxChange);
 }
 
 function formatDate(date) {
