@@ -324,11 +324,11 @@ function openTMap(lat, lon, name) {
     window.open(tmapUrl);
 }
 
-function openNaverMap(lat, lon, name) {
-    const encodedName = encodeURIComponent(name);
-    const naverMapUrl = `https://map.naver.com/v5/entry/address?lat=${lat}&lng=${lon}&title=${encodedName}`;
-    window.open(naverMapUrl);
+function openNaverMap(lat, lon) {
+    const naverMapUrl = `https://map.naver.com/v5/?c=${lon},${lat},16,0,0,0,dh&marker=${lon},${lat}`;
+    window.open(naverMapUrl, '_blank');
 }
+
 
 function generateCompanyURL(CompanyNum) {
     // URL 인코딩
