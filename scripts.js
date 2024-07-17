@@ -324,8 +324,9 @@ function openTMap(lat, lon, name) {
     window.open(tmapUrl);
 }
 
-function openNaverMap(lat, lon) {
-    const naverMapUrl = `https://map.naver.com/v5/?c=${lon},${lat},16,0,0,0,dh&marker=${lon},${lat}`;
+function openNaverMap(lat, lon, name) {
+    const encodedName = encodeURIComponent(name);
+    const naverMapUrl = `https://map.naver.com/v5/entry/address?c=/${lat},${lon},16/roadview&title=${encodedName}`;
     window.open(naverMapUrl, '_blank');
 }
 
