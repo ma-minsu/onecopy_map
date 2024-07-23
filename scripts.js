@@ -56,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
         filterContractsByTonerCheck(); // 토너 점검이 필요한 계약만 필터링
     });
 
+    document.getElementById('vikoCheckButton').addEventListener('click', function() {
+        filterContractsByVikoCheck(); // 토너 점검이 필요한 계약만 필터링
+    });
+
     document.getElementById('showSelectedButton').addEventListener('click', function() {
         showSelectedContractsOnMap(); // 체크된 데이터만 지도에 표시
     });
@@ -112,7 +116,8 @@ async function fetchCSVData(fileName) {
                 delayDays: columns[4],
                 latitude: parseFloat(columns[5]),
                 longitude: parseFloat(columns[6]),
-                tonerCheck: parseInt(columns[7])
+                tonerCheck: parseInt(columns[7]),
+                vikoCheck: parseInt(columns[8])
             };
         });
     } catch (error) {
@@ -147,6 +152,16 @@ function filterContractsByDelay(days) {
 
 function filterContractsByTonerCheck() {
     const filteredData = contractData.filter(contract => contract.tonerCheck === 1);
+    clearMarkers();
+    const groupedData = groupContractsByLocation(filteredData);
+    groupedData.forEach(contracts => {
+        addMarker(contracts);
+    });
+    refreshContractTable(filteredData);
+}
+
+function filterContractsByVikoCheck() {
+    const filteredData = contractData.filter(contract => contract.vikoCheck === 1);
     clearMarkers();
     const groupedData = groupContractsByLocation(filteredData);
     groupedData.forEach(contracts => {
@@ -329,7 +344,6 @@ function openNaverMap(lat, lon, name) {
     const naverMapUrl = `https://map.naver.com/v5/entry/address?c=/${lat},${lon},16/roadview&title=${encodedName}`;
     window.open(naverMapUrl, '_blank');
 }
-
 
 function generateCompanyURL(CompanyNum) {
     // URL 인코딩
