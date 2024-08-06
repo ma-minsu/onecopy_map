@@ -17,10 +17,8 @@ jobs:
         mkdir -p public
         echo "{\"MAP_ID\":\"${{ secrets.MAP_ID }}\", \"TOKEN_ID\":\"${{ secrets.TOKEN_ID }}\"}" > public/config.json
 
-    - name: Deploy to Server
-      run: |
-        # 여기에 배포 스크립트를 추가합니다.
-        # 예를 들어, 파일을 특정 서버로 복사하거나 배포 스크립트를 실행합니다.
-        scp -r public/ ma-minsu@onecopy_map:/path/to/deploy
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
