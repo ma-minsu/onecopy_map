@@ -7,42 +7,90 @@ body {
     align-items: center;
 }
 
+#update-date {
+    font-family: 'Noto Sans';
+    font-size: 12px;
+    color: #333;
+    margin: 0px;
+    padding: 6px;
+    line-height: 1;
+    text-align: center;
+    border: 1px solid #aaa;
+    border-radius: 20px;
+    letter-spacing: 1px;
+}
+
+
 #map {
     height: 40vh;
+    border: 1px solid #ddd;
+    border-radius: 6px;
 }
 
 #buttons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-betweenend;
     width: 100%;
     margin-top: 10px;
 }
 
 #buttons button, #buttons input {
-    margin-right: 5px;
     padding: 6px 12px;
     cursor: pointer;
     white-space: nowrap; /* 줄바꿈 방지 */
     font-size: 12px;
-    width: auto;
     height: auto;
+    flex-grow: 1; /* 버튼들이 동일한 너비를 가지도록 설정 */
 }
 
 #buttons input[type="number"] {
     max-width: 25vw;
     height: auto;
     border: 1px solid #ced4da;
-    border-radius: 0.25rem;
+    border-radius: 0.25rem 0 0 0.25rem;
     font-size: 16px;
     text-align: center;
+    flex-grow: 0; /* delayInput은 너비를 고정 */
+}
+
+#filterButton {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+#showSelectedButton {
+    border-radius: 0.25rem 0 0 0.25rem;
+    margin-left: 5px; /* 모든 버튼의 좌측에 여백 설정 */
+}
+
+#resetButton {
+    margin-left: 5px; /* 모든 버튼의 좌측에 여백 설정 */
+}
+
+#tonerCheckButton {
+    margin-left: 5px; /* 모든 버튼의 좌측에 여백 설정 */
+}
+
+#vikoCheckButton {
+    margin-left: 5px; /* 모든 버튼의 좌측에 여백 설정 */
+}
+
+#invenCheckButton {
+    margin-right: 0; /* 마지막 버튼의 우측 여백 제거 */
+    margin-left: 5px; /* 모든 버튼의 좌측에 여백 설정 */
+}
+
+.table-responsive {
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 0px;
 }
 
 table {
     width: 80vw;
     border-collapse: collapse;
-    margin-top: 10px;
     text-align: center;
     height: auto;
+    margin: 0 !important;
 }
 
 th {
@@ -61,6 +109,10 @@ td {
     text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
 }
 
+td.inventory-cell {
+    max-width: 25vw;
+}
+
 td.contract-checkbox {
     max-width: 10vw;
 }
@@ -74,10 +126,11 @@ td.address-cell{
 }
 
 td.cell{
-    max-width: 15vw;
+    max-width: 10vw;
 }
 
 td.day-cell{
+    max-width: 5vw;
     padding: 5px 2px !important; /* 원하는 패딩 값으로 조절 */
 }
 
@@ -87,11 +140,6 @@ thead {
 
 tbody tr:nth-child(even) {
     background-color: #f9f9f9;
-}
-
-#datepicker .ui-datepicker {
-    width: 100%;
-    border: auto;
 }
 
 .toast {
