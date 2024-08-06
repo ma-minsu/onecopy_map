@@ -17,8 +17,12 @@ jobs:
         mkdir -p public
         echo "{\"MAP_ID\":\"${{ secrets.MAP_ID }}\", \"TOKEN_ID\":\"${{ secrets.TOKEN_ID }}\"}" > public/config.json
 
-    - name: Upload config.json artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: config-json
-        path: public/config.json
+    - name: Commit config.json
+      run: |-
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add public/config.json
+        git commit -m 'Add config.json with secrets'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
