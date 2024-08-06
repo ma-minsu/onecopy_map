@@ -1,28 +1,26 @@
-name: Generate config.json with Secrets
+name: Deploy Application
 
 on:
   push:
     branches: [ "main" ]
-
+    
 jobs:
-  generate-config:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Create config.json
-      run: |-
+    - name: Setup environment
+      run: |
         mkdir -p public
         echo "{\"MAP_ID\":\"${{ secrets.MAP_ID }}\", \"TOKEN_ID\":\"${{ secrets.TOKEN_ID }}\"}" > public/config.json
 
-    - name: Commit config.json
-      run: |-
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add public/config.json
-        git commit -m 'Add config.json with secrets'
-        git push
+    - name: Deploy to Server
+      run: |
+        # 여기에 배포 스크립트를 추가합니다.
+        # 예를 들어, 파일을 특정 서버로 복사하거나 배포 스크립트를 실행합니다.
+        scp -r public/ user@your-server:/path/to/deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
