@@ -1,0 +1,24 @@
+name: Generate config.json with Secrets
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  generate-config:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Create config.json
+      run: |-
+        mkdir -p public
+        echo "{\"MAP_ID\":\"${{ secrets.MAP_ID }}\", \"TOKEN_ID\":\"${{ secrets.TOKEN_ID }}\"}" > public/config.json
+
+    - name: Upload config.json artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: config-json
+        path: public/config.json
