@@ -5,18 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONECOPY</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
     <div class="container my-3">
-        <div class="row">
-            <div class="col-12">
-                <div id="datepicker" class="my-3"></div>
-            </div>
-        </div>
+        <p id="update-date">Fetching update date...</p>
         <div id="map" class="my-3"></div>
         <div id="buttons" class="btn-group my-3" role="group" aria-label="Basic example">
             <input type="number" id="delayInput" class="form-control" placeholder="일수 입력" value="90">
@@ -25,6 +20,7 @@
             <button id="resetButton" class="btn btn-secondary">ALL</button>
             <button id="tonerCheckButton" class="btn btn-secondary">TONER</button>
             <button id="vikoCheckButton" class="btn btn-secondary">VIKO</button>
+            <button id="invenCheckButton" class="btn btn-secondary">INVEN</button>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
@@ -49,8 +45,6 @@
     <div id="toast" class="toast" style="display: none;">복사됨</div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=l9j1o2rgu6"></script>
     <script src="scripts.js"></script>
 </body>
 </html>
