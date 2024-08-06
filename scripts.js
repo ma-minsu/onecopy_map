@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     // Fetch the MAP_ID from config.json
-    const response = await fetch('public/config.json');
+    const response = await fetch('data/config.json');
     const config = await response.json();
     const mapId = config.MAP_ID;
     const tokenId = config.TOKEN_ID;
