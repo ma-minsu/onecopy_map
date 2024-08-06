@@ -15,7 +15,7 @@ jobs:
     - name: Create config.json
       run: |-
         mkdir -p public
-        echo "{\"MAP_ID\":\"${{ secrets.MAP_ID }}\", \"TOKEN_ID\":\"${{ secrets.TOKEN_ID }}\"}" > config.json
+        echo "{\"MAP_ID\":\"${{ secrets.MAP_ID }}\", \"TOKEN_ID\":\"${{ secrets.TOKEN_ID }}\"}" > public/config.json
 
     - name: Upload config.json artifact
       uses: actions/upload-artifact@v3
