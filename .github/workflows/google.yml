@@ -76,8 +76,11 @@ jobs:
     - name: Publish
       run: |-
         docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+    # Create config.json with secret value
+    - name: Create config.json
+      run: echo "{\"MAP_ID\":\"${{ secrets.MAP_ID }}\", \"TOKEN_ID\":\"${{ secrets.TOKEN_ID }}\"}" > public/config.json
     # Set up kustomize
-    - name: Set up Kustomize
+    - name: Set up Kustomizet
       run: |-
         curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
         chmod u+x ./kustomize
