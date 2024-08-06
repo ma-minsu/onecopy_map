@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Fetch the MAP_ID from config.json
     const response = await fetch('config.json');
     const config = await response.json();
