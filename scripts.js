@@ -1,47 +1,20 @@
-const parseCSVRow = row => {
-    let insideQuotes = false;
-    const columns = [];
-    let currentColumn = '';
-
-    for (let i = 0; i < row.length; i++) {
-        const char = row[i];
-        if (char === ',' && !insideQuotes) {
-            columns.push(currentColumn.trim());
-            currentColumn = '';
-        } else if (char === '"') {
-            insideQuotes = !insideQuotes;
-        } else {
-            currentColumn += char;
-        }
-    }
-
-    columns.push(currentColumn.trim());
-    return columns;
-};
-
 document.addEventListener('DOMContentLoaded', () => {
-    initMap(); // 지도 초기화
+    // Fetch the MAP_ID from config.json
+    const response = await fetch('config.json');
+    const config = await response.json();
+    const mapId = config.MAP_ID;
+    const tokenId = config.TOKEN_ID;
 
-    $("#datepicker").datepicker({
-        dateFormat: 'yymmdd', // 날짜 형식
-        maxDate: 0, // 오늘 날짜까지 선택 가능
-        minDate: -30, // 최대 30일 전까지 선택 가능
-        onSelect: async function(dateText) {
-            const fileName = `data/data_${dateText}.csv`;
-            contractData = await fetchCSVData(fileName);
-            const filteredData = filterContractsByDelayInit(contractData, 90);
-            updateMapAndTable(filteredData);
-        },
-        beforeShow: function(input, inst) {
-            setTimeout(function() {
-                inst.dpDiv.css({
-                    top: input.offsetTop + input.offsetHeight + 10,
-                    left: input.offsetLeft
-                });
-            }, 0);
-        }
-    }).addClass('custom-datepicker');
+    // Dynamically load the Naver Maps API script with the MAP_ID
+    const script = document.createElement('script');
+    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${mapId}`;
+    document.head.appendChild(script);
 
+    script.onload = () => {
+        initMap(); // 지도 초기화
+    };
+    
+    fetchAndDisplayUpdateDate();
 
     document.getElementById('resetButton').addEventListener('click', function() {
         updateMapAndTable(contractData); // 모든 마커와 테이블을 리셋
@@ -63,7 +36,68 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('showSelectedButton').addEventListener('click', function() {
         showSelectedContractsOnMap(); // 체크된 데이터만 지도에 표시
     });
+
+    document.getElementById('invenCheckButton').addEventListener('click', async function() {
+        await loadInventoryTable(); // INVENTORY 데이터 로드 및 테이블 업데이트
+    });
 });
+
+const parseCSVRow = row => {
+    let insideQuotes = false;
+    const columns = [];
+    let currentColumn = '';
+
+    for (let i = 0; i < row.length; i++) {
+        const char = row[i];
+        if (char === ',' && !insideQuotes) {
+            columns.push(currentColumn.trim());
+            currentColumn = '';
+        } else if (char === '"') {
+            insideQuotes = !insideQuotes;
+        } else {
+            currentColumn += char;
+        }
+    }
+
+    columns.push(currentColumn.trim());
+    return columns;
+};
+
+async function fetchAndDisplayUpdateDate() {
+    // GitHub API 호출을 위한 정보
+    const owner = 'ma-minsu';
+    const repo = 'onecopy_map';
+    const path = 'data/contract.csv';
+    const token = '${tokenId}';
+
+    const commitsUrl = `https://api.github.com/repos/${owner}/${repo}/commits?path=${path}&page=1&per_page=1`;
+
+    try {
+        const response = await fetch(commitsUrl, {
+            headers: {
+                'Authorization': `token ${token}`
+            }
+        });
+        const commitsData = await response.json();
+        if (commitsData.length > 0) {
+            const updateDate = commitsData[0].commit.committer.date;
+            const formattedDate = new Date(updateDate).toLocaleString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }).replace(/\./g, '').replace(/ /g, '. ').replace(',', '');
+            document.getElementById('update-date').textContent = formattedDate;
+        } else {
+            document.getElementById('update-date').textContent = 'Error: No update date available.';
+        }
+    } catch (error) {
+        document.getElementById('update-date').textContent = 'Error fetching file information.';
+        console.error('Error:', error);
+    }
+}
 
 function handleCheckboxChange() {
     const tableBody = document.getElementById('contract-table-body');
@@ -123,6 +157,43 @@ async function fetchCSVData(fileName) {
     } catch (error) {
         console.error('Error fetching CSV data:', error);
         return [];
+    }
+}
+
+async function loadInventoryTable() {
+    try {
+        const response = await fetch('data/warehouse.csv');
+        if (!response.ok) throw new Error('Failed to fetch warehouse data');
+        const data = await response.text();
+        const rows = data.split('\n').slice(1); // 첫 번째 행은 헤더이므로 제외
+        const tableBody = document.getElementById('contract-table-body');
+        tableBody.innerHTML = ''; // 기존 테이블 내용 초기화
+
+        rows.forEach(row => {
+            const columns = parseCSVRow(row);
+            const newRow = document.createElement('tr');
+            columns.forEach(column => {
+                const newCell = document.createElement('td');
+                newCell.textContent = column.trim();
+                newCell.classList.add('inventory-cell'); 
+                newRow.appendChild(newCell);
+            });
+            tableBody.appendChild(newRow);
+        });
+
+        // 테이블 헤더 업데이트
+        const tableHead = document.querySelector('.table thead');
+        tableHead.innerHTML = `
+            <tr>
+                <th>상품종류</th>
+                <th>상품명</th>
+                <th>모델명</th>
+                <th>색상</th>
+                <th>재고</th>
+            </tr>
+        `;
+    } catch (error) {
+        console.error('Error fetching warehouse data:', error);
     }
 }
 
@@ -193,7 +264,7 @@ async function initMap() {
     // Load initial data based on today's date
     const today = new Date();
     const formattedToday = formatDate(today);
-    const fileName = `data/data_${formattedToday}.csv`;
+    const fileName = `data/contract.csv`;
 
     contractData = await fetchCSVData(fileName);
     const filteredData = filterContractsByDelayInit(contractData, 90);
@@ -299,6 +370,20 @@ function addToContractTable(contract) {
         </td>
     `;
     tableBody.appendChild(newRow);
+
+    // 테이블 헤더 업데이트
+    const tableHead = document.querySelector('.table thead');
+    tableHead.innerHTML = `
+        <tr>
+            <th>고정</th>
+            <th>번호</th>
+            <th>회사</th>
+            <th>주소</th>
+            <th>기계</th>
+            <th>Day</th>
+            <th>MAP</th>
+        </tr>
+    `;
 
     // 체크박스 이벤트 리스너 추가
     const checkbox = newRow.querySelector('.contract-checkbox');
