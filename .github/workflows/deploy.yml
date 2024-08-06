@@ -22,3 +22,9 @@ jobs:
       with:
         name: config-json
         path: public/config.json
+
+    - name: Upload config.json artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: config-json
+        path: data/config.json
