@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     initMap(); // 지도 초기화
-    fetchAndDisplayUpdateDate();
+    fetchUpdateDate();
 
     document.getElementById('resetButton').addEventListener('click', function() {
         updateMapAndTable(contractData); // 모든 마커와 테이블을 리셋
@@ -49,52 +49,40 @@ const parseCSVRow = row => {
     return columns;
 };
 
-async function fetchAndDisplayUpdateDate() {
-    // GitHub API 호출을 위한 정보
-    const owner = 'ma-minsu';
-    const repo = 'onecopy_map';
-    const path = 'data/contract.csv';
-    const token = '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';
-
-    const commitsUrl = `https://api.github.com/repos/${owner}/${repo}/commits?path=${path}&page=1&per_page=1`;
-
-    try {
-        const response = await fetch(commitsUrl, {
-            headers: {
-                'Authorization': `token ${token}`
-            }
-        });
-        const commitsData = await response.json();
-        if (commitsData.length > 0) {
-            const updateDate = commitsData[0].commit.committer.date;
-            const formattedDate = new Date(updateDate).toLocaleString('ko-KR', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-            }).replace(/\./g, '').replace(/ /g, '. ').replace(',', '');
-            document.getElementById('update-date').textContent = formattedDate;
-        } else {
-            document.getElementById('update-date').textContent = 'Error: No update date available.';
+function fetchUpdateDate() {
+    $.ajax({
+        url: 'data/date.txt',
+        dataType: 'text',
+        success: function(data) {
+            $('#update-date').text(data);
+        },
+        error: function() {
+            $('#update-date').text('Failed to fetch update date.');
         }
-    } catch (error) {
-        document.getElementById('update-date').textContent = 'Error fetching file information.';
-        console.error('Error:', error);
-    }
+    });
 }
 
 function handleCheckboxChange() {
     const tableBody = document.getElementById('contract-table-body');
     const rows = Array.from(tableBody.querySelectorAll('tr'));
-    const checkedRows = rows.filter(row => row.querySelector('.contract-checkbox').checked);
-    const uncheckedRows = rows.filter(row => !row.querySelector('.contract-checkbox').checked);
-
-    // Clear table and re-append rows with checked rows first
+    const fragment = document.createDocumentFragment();
+    
+    // 체크된 행과 체크되지 않은 행을 분류하여 fragment에 추가
+    rows.forEach(row => {
+        if (row.querySelector('.contract-checkbox').checked) {
+            fragment.appendChild(row);
+        }
+    });
+    
+    rows.forEach(row => {
+        if (!row.querySelector('.contract-checkbox').checked) {
+            fragment.appendChild(row);
+        }
+    });
+    
+    // 테이블 본문을 비우고 fragment 추가
     tableBody.innerHTML = '';
-    checkedRows.forEach(row => tableBody.appendChild(row));
-    uncheckedRows.forEach(row => tableBody.appendChild(row));
+    tableBody.appendChild(fragment);
 }
 
 function truncateText(text, maxLength) {
