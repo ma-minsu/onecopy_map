@@ -1,19 +1,5 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    // Fetch the MAP_ID from config.json
-    const response = await fetch('public/config.json');
-    const config = await response.json();
-    const mapId = config.MAP_ID;
-    const tokenId = config.TOKEN_ID;
-
-    // Dynamically load the Naver Maps API script with the MAP_ID
-    const script = document.createElement('script');
-    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${mapId}`;
-    document.head.appendChild(script);
-
-    script.onload = () => {
-        initMap(); // 지도 초기화
-    };
-    
+document.addEventListener('DOMContentLoaded', () => {
+    initMap(); // 지도 초기화
     fetchAndDisplayUpdateDate();
 
     document.getElementById('resetButton').addEventListener('click', function() {
@@ -68,7 +54,7 @@ async function fetchAndDisplayUpdateDate() {
     const owner = 'ma-minsu';
     const repo = 'onecopy_map';
     const path = 'data/contract.csv';
-    const token = '${tokenId}';
+    const token = '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';
 
     const commitsUrl = `https://api.github.com/repos/${owner}/${repo}/commits?path=${path}&page=1&per_page=1`;
 
